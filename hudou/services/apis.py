@@ -1,42 +1,9 @@
 import os
 import datetime
-from django.http import JsonResponse
 from hudou.model.valueobjects import House, HouseSold, Area
-from hudou.handler.datafetcher import DataFetcher
 from hudou.services.houseservices import HouseService
-from hudou.services.apis import getTodayReportSummary
-from django.shortcuts import render
-from django.conf import settings
-from django.http import HttpResponse
 
-from . import database
-from .models import PageView
-
-# Create your views here.
-
-def index(request):
-    #hostname = os.getenv('HOSTNAME', 'unknown')
-    #PageView.objects.create(hostname=hostname)
-    summary = getTodayReportSummary()
-    return render(request, 'index.html',{
-        'amount': summary['amount'],
-        'totalRooms': summary['total'],
-        'soldRooms': summary['sold'],
-        'rentPercentage': summary['soldPercent'] * 100,
-    })
-    '''
-    return render(request, 'hudou/index.html', {
-        'hostname': hostname,
-        'database': database.info(),
-        'count': PageView.objects.count()
-    })
-    '''
-
-def health(request):
-    return render(request,'index.html')
-    #return HttpResponse(PageView.objects.count())
-
-def getReportSummary(request):
+def getTodayReportSummary():
     date = datetime.datetime.today()
     areas = Area.objects.only('id', 'area_name').all()
     houses = HouseService.listAllHouses(HouseService)
@@ -79,8 +46,7 @@ def getReportSummary(request):
                 areaCountData['soldCount'] = areaCountData['soldCount'] + 1
             soldHouseAreaCountMap[key] = areaCountData
 
-    content = {'total': total, 'sold': sold, 'amount': round(amount, 2), 'soldPercent': round(sold/float(total), 2),
+    summary = {'total': total, 'sold': sold, 'amount': round(amount, 2), 'soldPercent': round(sold/float(total), 2),
                'soldHouseAreas': soldHouseAreaCountMap}
 
-    print(content)
-    return JsonResponse(content, content_type='application/json; charset=utf-8')
+    return summary

@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar',
-    'welcome',
+    'hudou',
 ]
 
 MIDDLEWARE = [
@@ -84,10 +84,22 @@ WSGI_APPLICATION = 'wsgi.application'
 
 from . import database
 
+'''
 DATABASES = {
     'default': database.config()
 }
+'''
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'hudou',
+        'USER':'hudou_user',
+        'PASSWORD':'iforgot',
+        'HOST':'127.0.0.1',
+        'PORT':'5432',
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators

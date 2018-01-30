@@ -13,18 +13,18 @@ This is a minimal Django 1.11 project. It was created with these steps:
 3. `pip freeze > requirements.txt`
 4. `django-admin startproject project .`
 3. Update `project/settings.py` to configure `SECRET_KEY`, `DATABASE` and `STATIC_ROOT` entries
-4. `./manage.py startapp welcome`, to create the welcome page's app
+4. `./manage.py startapp hudou`, to create the hudou page's app
 
 From this initial state you can:
 * create new Django apps
-* remove the `welcome` app
+* remove the `hudou` app
 * rename the Django project
 * update settings to suit your needs
 * install more Python libraries and add them to the `requirements.txt` file
 
 ## Special files in this repository
 
-Apart from the regular files created by Django (`project/*`, `welcome/*`, `manage.py`), this repository contains:
+Apart from the regular files created by Django (`project/*`, `hudou/*`, `manage.py`), this repository contains:
 
 ```
 openshift/         - OpenShift-specific files
@@ -73,7 +73,7 @@ To run this project in your development machine, follow these steps:
 
     `./manage.py runserver`
 
-7. Open your browser and go to http://127.0.0.1:8000, you will be greeted with a welcome page.
+7. Open your browser and go to http://127.0.0.1:8000, you will be greeted with a hudou page.
 
 
 ## Deploying to OpenShift
@@ -213,7 +213,7 @@ After each deploy you get a fresh, empty, SQLite database. That is fine for a fi
 
 To do that, you should add a properly configured database server or ask your OpenShift administrator to add one for you. Then use `oc env` to update the `DATABASE_*` environment variables in your DeploymentConfig to match your database settings.
 
-Redeploy your application to have your changes applied, and open the welcome page again to make sure your application is successfully connected to the database server.
+Redeploy your application to have your changes applied, and open the hudou page again to make sure your application is successfully connected to the database server.
 
 
 ## Looking for help
