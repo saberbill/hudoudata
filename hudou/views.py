@@ -19,7 +19,7 @@ def index(request):
         'rentPercentage': '21%',
     })
     '''
-    return render(request, 'welcome/index.html', {
+    return render(request, 'hudou/index.html', {
         'hostname': hostname,
         'database': database.info(),
         'count': PageView.objects.count()
