@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>胡豆短租数据日报</title>
+    <link rel="stylesheet" href="/static/default.css"/>
+</head>
+<body>
+<div class="container">
+    <div class="title">
+        胡豆短租数据日报
+    </div>
+    <div class="block">
+        <div class="data center">
+            <div class="value strong">
+                {{ amount }}<span class="unit">元</span>
+            </div>
+            <div class="label">
+                交易额
+            </div>
+        </div>
+
+        <div class="box">
+            <div class="data">
+                <div class="value">
+                    {{ soldRooms }}<span class="unit">间</span>
+                </div>
+                <div class="label">
+                    已售
+                </div>
+            </div>
+            <div class="data">
+                <div class="value">
+                    {{ totalRooms }}<span class="unit">间</span>
+                </div>
+                <div class="label">
+                    总数
+                </div>
+            </div>
+            <div class="data">
+                <div class="value">
+                    {{ rentPercentage }}<span class="unit">%</span>
+                </div>
+                <div class="label">
+                    出租率
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="block">
+        <canvas />
+    </div>
+</div>
+</body>
+</html>
