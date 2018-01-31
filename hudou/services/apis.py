@@ -3,6 +3,13 @@ import datetime
 from hudou.model.valueobjects import House, HouseSold, Area
 from hudou.services.houseservices import HouseService
 
+
+def getDailySummary(date):
+    dailySummary = HouseService.listDailySummary(date)
+
+    return dailySummary
+
+
 def getTodayReportSummary():
     date = datetime.datetime.today()
     areas = Area.objects.only('id', 'area_name').all()

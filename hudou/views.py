@@ -1,13 +1,17 @@
 import os
 import datetime
 from django.http import JsonResponse
-from hudou.model.valueobjects import House, HouseSold, Area
+from hudou.model.valueobjects import House, HouseSold, Area, DailySummary
 from hudou.handler.datafetcher import DataFetcher
 from hudou.services.houseservices import HouseService
-from hudou.services.apis import getTodayReportSummary
+from hudou.services.apis import getDailySummary
 from django.shortcuts import render
 from django.conf import settings
 from django.http import HttpResponse
+from hudou.util.utilities import todayWithTZ
+from django.core import serializers
+
+import json
 
 from . import database
 from .models import PageView
@@ -17,13 +21,14 @@ from .models import PageView
 def index(request):
     #hostname = os.getenv('HOSTNAME', 'unknown')
     #PageView.objects.create(hostname=hostname)
-
-    summary = getTodayReportSummary()
+    today = todayWithTZ()
+    dailySummary = getDailySummary(today)[0]
+    soldPercent = round(dailySummary.soldRooms/dailySummary.totalRooms, 2)
     return render(request, 'index.html',{
-        'amount': summary['amount'],
-        'totalRooms': summary['total'],
-        'soldRooms': summary['sold'],
-        'rentPercentage': summary['soldPercent'] * 100,
+        'turnover': dailySummary.turnover,
+        'totalRooms': dailySummary.totalRooms,
+        'soldRooms': dailySummary.soldRooms,
+        'soldPercent': format(soldPercent, '.00%'),
     })
     '''
     return render(request, 'hudou/index.html', {
@@ -32,6 +37,49 @@ def index(request):
         'count': PageView.objects.count()
     })
     '''
+
+def getLatestSummary(request):
+    days = request.GET.get('days')
+    if(not days):
+        days = '7'
+    summaries = HouseService.listLatestDailySummary(int(days))
+    #content = serializers.serialize("json", summaries)
+    #print(content)
+    dates = []
+    soldRooms = []
+    totalRooms = []
+    turnovers = []
+    for item in summaries[::-1]:
+        dates.append(item.date)
+        totalRooms.append(item.totalRooms)
+        soldRooms.append(item.soldRooms)
+        turnovers.append(item.turnover)
+    data = {
+        'count': len(summaries),
+        'dates': dates,
+        'totalRooms': totalRooms,
+        'soldRooms': soldRooms,
+        'turnovers': turnovers}
+
+    return JsonResponse(data, content_type='application/json; charset=utf-8')
+
+def getHouseArea(request):
+    today = todayWithTZ().strftime("%Y-%m-%d")
+    #houseSolds = HouseService.listHousesSoldByDate(today)
+    #houses = HouseService.list(HouseService)
+    #print(content)
+    areas = []
+    areaCounts = []
+    totalAreas = HouseService.getOnlineHouses(today)
+    for (k,v) in totalAreas.items():
+        areas.append(k)
+        areaCounts.append(v)
+    data = {
+        'count': len(totalAreas),
+        'areas': areas,
+        'areaCounts': areaCounts
+    }
+    return JsonResponse(data, content_type='application/json; charset=utf-8')
 
 def health(request):
     return render(request,'index.html')
@@ -51,11 +99,11 @@ def getReportSummary(request):
     for housesold in houseSolds:
         total = total + 1
         houseDetail = House.objects.get(id=housesold.house_id)
-        key = 'areaId-' + str(houseDetail.area_id)
+        key = 'areaId-' + str(houseDetail.areaId)
         areaCountData = soldHouseAreaCountMap.get(key, None)
         if(not areaCountData):
-            areaCountData = {'areaId': houseDetail.area_id,
-                             'areaName': houseDetail.area_name,
+            areaCountData = {'areaId': houseDetail.areaId,
+                             'areaName': houseDetail.areaName,
                              'count': 1,
                              'soldCount': 0}
         else:
@@ -64,16 +112,16 @@ def getReportSummary(request):
 
         if (housesold.status == 1):
             sold = sold + 1
-            if (housesold.special_price):
-                price = housesold.special_price
+            if (housesold.specialPrice):
+                price = housesold.specialPrice
             else:
                 price = housesold.price * 0.88
             amount = amount + price
 
             areaCountData = soldHouseAreaCountMap.get(key, None)
             if (not areaCountData):
-                areaCountData = {'areaId': houseDetail.area_id,
-                                 'areaName': houseDetail.area_name,
+                areaCountData = {'areaId': houseDetail.areaId,
+                                 'areaName': houseDetail.areaName,
                                  'count': 1,
                                  'soldCount': 1}
             else:

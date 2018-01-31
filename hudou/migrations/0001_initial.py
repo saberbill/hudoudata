@@ -22,4 +22,10 @@ class Migration(migrations.Migration):
 
 
 from hudou.handler.sechduler import startCronJob
-startCronJob()
+#startCronJob()
+
+from hudou.handler.datafetcher import DataFetcher
+DataFetcher.readHudouOnlineData(DataFetcher)
+
+from hudou.services.houseservices import HouseService
+HouseService.handleHistory(HouseService)

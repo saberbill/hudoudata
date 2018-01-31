@@ -3,6 +3,8 @@
 import json
 import requests
 from hudou.services.houseservices import HouseService
+from django.utils import timezone
+from hudou.util.utilities import Utilities, todayWithTZ
 
 PAGE_SIZE = 70
 URL = 'http://mp.hudoufun.cn/tenement/js/listview_h5.ashx?' \
@@ -44,5 +46,10 @@ class DataFetcher:
             HouseService.saveAllHouses(data['data'])
             pageIndex = pageIndex + 1
             hasPage = True if (pageIndex < int(data['pagenum'])) else False
+
+        print('generate daily summary.....')
+        # generate daily summary
+        today = todayWithTZ()
+        HouseService.generateDailySummary(today)
 
 #DataFetcher.readHudouOnlineData(DataFetcher)

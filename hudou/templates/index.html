@@ -5,6 +5,7 @@
     <title>胡豆短租数据日报</title>
     <link rel="stylesheet" href="/static/default.css"/>
     <script src="/static/Chart.bundle.min.js"></script>
+    <script src="/static/jquery-3.3.1.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -14,7 +15,7 @@
     <div class="block">
         <div class="data center">
             <div class="value strong">
-                {{ amount }}<span class="unit">元</span>
+                {{ turnover }}<span class="unit">元</span>
             </div>
             <div class="label">
                 交易额
@@ -40,7 +41,7 @@
             </div>
             <div class="data">
                 <div class="value">
-                    {{ rentPercentage }}<span class="unit">%</span>
+                    {{ soldPercent }}<span class="unit">%</span>
                 </div>
                 <div class="label">
                     出租率
@@ -49,14 +50,24 @@
         </div>
     </div>
     <div class="block">
-        <canvas id="houseAreaChart" width="400" height="400"></canvas>
+        <canvas id="houseAreaChart" width="200" height="100"></canvas>
+        <canvas id="houseSoldChart" width="200" height="100"></canvas>
+        <canvas id="turnoverChart" width="200" height="100"></canvas>
+        <canvas id="houseSoldAreaChart" width="100%" height="100"></canvas>
     </div>
 </div>
 
 <script>
-    var randomScalingFactor = function() {
-        return Math.ceil(Math.random() * 10.0) * Math.pow(10, Math.ceil(Math.random() * 5));
+    window.chartColors = {
+        red: 'rgb(255, 99, 132)',
+        orange: 'rgb(255, 159, 64)',
+        yellow: 'rgb(255, 205, 86)',
+        green: 'rgb(75, 192, 192)',
+        blue: 'rgb(54, 162, 235)',
+        purple: 'rgb(153, 102, 255)',
+        grey: 'rgb(201, 203, 207)'
     };
+    /*
     var config = {
         type: 'line',
         data: {
@@ -102,13 +113,165 @@
             }
         }
     };
-
-    window.onload = function () {
-        var ctx = document.getElementById("houseAreaChart").getContext("2d");
-        //window.myLine = new Chart(ctx, config);
-
-        var houseAreaChart = new Chart(ctx, config);
+*/
+    options = {
+        responsive: true,
+        title:
+            {
+                display: true,
+                text: '胡豆短租数据趋势'
+            },
+        tooltips: {
+            mode: 'index',
+            intersect: false,
+        },
+        hover: {
+            mode: 'nearest',
+            intersect: true
+        },
+        scales: {
+            xAxes: [{
+                display: true,
+                scaleLabel: {
+                    display: true,
+                    labelString: '日期'
+                }
+            }],
+            yAxes:
+                [{
+                    display: true,
+                    scaleLabel: {
+                        display: true,
+                        labelString: '房间数'
+                    }
+                }]
+        }
+    }
+    var houseSoldChartConfig = {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: "总房源数",
+                backgroundColor: window.chartColors.red,
+                borderColor: window.chartColors.red,
+                data: [],
+                fill: false,
+            }, {
+                label: "已售房源",
+                fill: false,
+                backgroundColor: window.chartColors.blue,
+                borderColor: window.chartColors.blue,
+                data: [],
+            }, {
+                label: "销售额",
+                fill: false,
+                backgroundColor: window.chartColors.orange,
+                borderColor: window.chartColors.orange,
+                data: [],
+            }]
+        },
+        options: options
     };
+
+    var turnoverChartConfig = {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: "销售额",
+                fill: false,
+                backgroundColor: window.chartColors.orange,
+                borderColor: window.chartColors.orange,
+                data: [],
+            }]
+        },
+        options: options
+    };
+    var houseAreaChartConfig = {
+        type: 'doughnut',
+        data: {
+            datasets: [{
+                data: [],
+                backgroundColor: [
+                    window.chartColors.red,
+                    window.chartColors.orange,
+                    window.chartColors.yellow,
+                    window.chartColors.green,
+                    window.chartColors.blue
+                ],
+                label: '房源'
+            }],
+            labels: []
+        },
+        options: {
+            responsive: true,
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: '房源区域分布图'
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true
+            }
+        }
+    };
+
+    $(function () {
+        var houseSoldChartCtx = document.getElementById("houseSoldChart").getContext("2d");
+        var houseSoldChart = new Chart(houseSoldChartCtx, houseSoldChartConfig);
+        houseSoldChartConfig.options.title.text = '近7日房源数据趋势图';
+
+        var turnoverChartCtx = document.getElementById("turnoverChart").getContext("2d");
+        var turnoverChart = new Chart(turnoverChartCtx, turnoverChartConfig);
+        turnoverChartConfig.options.title.text = '近7日销售额趋势图';
+        turnoverChartConfig.options.scales.xAxes[0].scaleLabel = '日期'
+        turnoverChartConfig.options.scales.yAxes[0].scaleLabel = '销售额'
+
+        var houseAreaChartCtx = document.getElementById("houseAreaChart").getContext("2d");
+        var houseAreaChart = new Chart(houseAreaChartCtx, houseAreaChartConfig);
+
+        $.ajax({
+            url: "/getLatestSummary",
+            type: "GET",
+            datatype: "JSON",
+            data: {days: 7},
+            success: function (data) {
+                console.log(data);
+                houseSoldChartConfig.data.labels = data.dates;
+                houseSoldChartConfig.data.datasets[0].data = data.totalRooms;
+                houseSoldChartConfig.data.datasets[1].data = data.soldRooms;
+                houseSoldChart.update();
+
+                turnoverChartConfig.data.labels = data.dates;
+                turnoverChartConfig.data.datasets[0].data = data.turnovers;
+                turnoverChart.update()
+            },
+            error: function () {
+                alert("提交失败！");
+            }
+        });
+
+        $.ajax({
+            url: "/getHouseArea",
+            type: "GET",
+            datatype: "JSON",
+            data: {},
+            success: function (data) {
+                console.log(data);
+                //var areas =
+                houseAreaChartConfig.data.labels = data.areas;
+                houseAreaChartConfig.data.datasets[0].data = data.areaCounts;
+                houseAreaChart.update();
+            },
+            error: function () {
+                alert("提交失败！");
+            }
+        });
+    });
 
 </script>
 </body>

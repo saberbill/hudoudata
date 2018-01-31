@@ -5,11 +5,11 @@
 -- HeidiSQL 版本:                  9.4.0.5125
 -- --------------------------------------------------------
 
--- 导出  表 hudou.hudou_area 结构
-CREATE SEQUENCE IF NOT EXISTS hudou_area_seq;
+-- 导出  表 hudou.area 结构
+CREATE SEQUENCE IF NOT EXISTS area_seq;
 
-CREATE TABLE IF NOT EXISTS hudou_area (
-  id int check (id > 0) NOT NULL DEFAULT NEXTVAL ('hudou_area_seq'),
+CREATE TABLE IF NOT EXISTS area (
+  id int check (id > 0) NOT NULL DEFAULT NEXTVAL ('area_seq'),
   lid varchar(40) DEFAULT NULL,
   area_name varchar(20) DEFAULT NULL,
   long double precision DEFAULT NULL,
@@ -18,22 +18,36 @@ CREATE TABLE IF NOT EXISTS hudou_area (
   CONSTRAINT UNQ_LID UNIQUE  (lid)
 )  ;
 
-ALTER SEQUENCE hudou_area_seq RESTART WITH 5;
 
--- 正在导出表  hudou.hudou_area 的数据：~4 rows (大约)
-/*!40000 ALTER TABLE hudou_area DISABLE KEYS */;
-INSERT INTO hudou_area (id, lid, area_name, long, lat) VALUES
+CREATE SEQUENCE IF NOT EXISTS daily_summary_seq;
+
+CREATE TABLE IF NOT EXISTS daily_summary (
+  id int check (id > 0) NOT NULL DEFAULT NEXTVAL ('daily_summary_seq'),
+  total_rooms int check (total_rooms >= 0) DEFAULT NULL,
+  sold_rooms int check (sold_rooms >= 0) DEFAULT NULL,
+  turnover double precision DEFAULT NULL,
+  date date NOT NULL,
+  last_updated timestamp(0) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  CONSTRAINT UNQ_DATE UNIQUE  (date)
+)  ;
+
+ALTER SEQUENCE area_seq RESTART WITH 5;
+
+-- 正在导出表  hudou.area 的数据：~4 rows (大约)
+/*!40000 ALTER TABLE area DISABLE KEYS */;
+INSERT INTO area (id, lid, area_name, long, lat) VALUES
 	(1, '2793425b-91b6-4497-8a0b-7807221c7e25', '龙泉（川师）', 104.201, 30.566),
 	(2, '7facc059-b025-485d-9526-7906773e9390', '温江（西财）', 103.821, 30.6813),
 	(3, '06b57da2-19a7-4bcd-9648-1eb252bf0ccf', '犀浦（交大）', 103.986, 30.7658),
 	(4, '5b60ea9d-20ca-4de1-83cb-c8569823ea38', '双流（川大江安）', 104, 30.5566);
-/*!40000 ALTER TABLE hudou_area ENABLE KEYS */;
+/*!40000 ALTER TABLE area ENABLE KEYS */;
 
--- 导出  表 hudou.hudou_house 结构
-CREATE SEQUENCE IF NOT EXISTS hudou_house_seq;
+-- 导出  表 hudou.house 结构
+CREATE SEQUENCE IF NOT EXISTS house_seq;
 
-CREATE TABLE IF NOT EXISTS hudou_house (
-  id int check (id > 0) NOT NULL DEFAULT NEXTVAL ('hudou_house_seq'),
+CREATE TABLE IF NOT EXISTS house (
+  id int check (id > 0) NOT NULL DEFAULT NEXTVAL ('house_seq'),
   uuid varchar(40) NOT NULL DEFAULT '0',
   lid varchar(40) NOT NULL DEFAULT '0',
   area_id int check (area_id > 0) DEFAULT NULL,
@@ -50,13 +64,13 @@ CREATE TABLE IF NOT EXISTS hudou_house (
   CONSTRAINT UNQ_UUID UNIQUE  (uuid)
 )  ;
 
-ALTER SEQUENCE hudou_house_seq RESTART WITH 68;
+ALTER SEQUENCE house_seq RESTART WITH 68;
 
--- 正在导出表  hudou.hudou_house 的数据：~58 rows (大约)
-/*!40000 ALTER TABLE hudou_house DISABLE KEYS */;
+-- 正在导出表  hudou.house 的数据：~58 rows (大约)
+/*!40000 ALTER TABLE house DISABLE KEYS */;
 
-CREATE INDEX UNQ_LID ON hudou_house (lid);
-INSERT INTO hudou_house (id, uuid, lid, area_id, area_name, title, price, lang, lat, model, status, create_time, last_updated) VALUES
+CREATE INDEX UNQ_LID ON house (lid);
+INSERT INTO house (id, uuid, lid, area_id, area_name, title, price, lang, lat, model, status, create_time, last_updated) VALUES
 	(1, '38a3502e-9851-4c36-8d2c-79b76392b8c5', '2793425b-91b6-4497-8a0b-7807221c7e25', 1, '龙泉（川师）', '【龙泉】师大花园朴宿投影一居室2305b', 136, 104.198, 30.5732, '一室一厅一卫', 1, '2018-01-10 11:19:07', '2018-01-10 11:19:07'),
 	(2, 'ddce0bdc-dc6c-4f00-949c-348b13a33261', '2793425b-91b6-4497-8a0b-7807221c7e25', 1, '龙泉（川师）', '【龙泉】师大花园芷间一居室3122', 136, 104.198, 30.5742, '一室一厅一卫', 1, '2018-01-10 11:19:07', '2018-01-10 11:19:07'),
 	(3, '2c774e4a-b0bc-4820-be5a-4640bdb291d4', '2793425b-91b6-4497-8a0b-7807221c7e25', 1, '龙泉（川师）', '【龙泉】师大花园清筑一居室3118', 136, 104.198, 30.5736, '一室一厅一卫', 1, '2018-01-10 11:19:07', '2018-01-10 11:19:07'),
@@ -124,13 +138,13 @@ INSERT INTO hudou_house (id, uuid, lid, area_id, area_name, title, price, lang, 
 	(65, '48404bf5-010b-43ca-b730-385be7a2a003', '6dc1e01a-7af7-4702-9da2-a9d950fab7c9', 1, '龙泉（川师）', '【龙泉】爱丽丝风大床房', 145.454, 104.198, 30.574, '一室一厅一卫', 1, '2018-01-24 11:40:49', '2018-01-24 11:40:49'),
 	(66, '1e5a257c-cedd-456e-9f97-2e4625ced8f1', '6dc1e01a-7af7-4702-9da2-a9d950fab7c9', 1, '龙泉（川师）', '【龙泉】圣托里尼风双大床房', 145.454, 104.198, 30.574, '一室一厅一卫', 1, '2018-01-24 11:40:49', '2018-01-24 11:40:49'),
 	(67, '048e45c4-269b-42fd-8892-31b6e4babbb4', '6dc1e01a-7af7-4702-9da2-a9d950fab7c9', 1, '龙泉（川师）', '【龙泉】天鹅堡风大床房', 145.454, 104.198, 30.574, '一室一厅一卫', 1, '2018-01-24 11:40:49', '2018-01-24 11:40:49');
-/*!40000 ALTER TABLE hudou_house ENABLE KEYS */;
+/*!40000 ALTER TABLE house ENABLE KEYS */;
 
--- 导出  表 hudou.hudou_housesold 结构
-CREATE SEQUENCE IF NOT EXISTS hudou_housesold_seq;
+-- 导出  表 hudou.house_sold 结构
+CREATE SEQUENCE IF NOT EXISTS house_sold_seq;
 
-CREATE TABLE IF NOT EXISTS hudou_housesold (
-  id int check (id > 0) NOT NULL DEFAULT NEXTVAL ('hudou_housesold_seq'),
+CREATE TABLE IF NOT EXISTS house_sold (
+  id int check (id > 0) NOT NULL DEFAULT NEXTVAL ('house_sold_seq'),
   house_id int check (house_id > 0) DEFAULT NULL,
   price double precision check (price >= 0) DEFAULT NULL,
   special_price double precision check (special_price >= 0) DEFAULT NULL,
@@ -141,11 +155,11 @@ CREATE TABLE IF NOT EXISTS hudou_housesold (
   CONSTRAINT UNQ_HOUSE_ID_DATE UNIQUE  (house_id,date)
 )  ;
 
-ALTER SEQUENCE hudou_housesold_seq RESTART WITH 789;
+ALTER SEQUENCE house_sold_seq RESTART WITH 789;
 
--- 正在导出表  hudou.hudou_housesold 的数据：~788 rows (大约)
-/*!40000 ALTER TABLE hudou_housesold DISABLE KEYS */;
-INSERT INTO hudou_housesold (id, house_id, price, special_price, date, status, last_updated) VALUES
+-- 正在导出表  hudou.house_sold 的数据：~788 rows (大约)
+/*!40000 ALTER TABLE house_sold DISABLE KEYS */;
+INSERT INTO house_sold (id, house_id, price, special_price, date, status, last_updated) VALUES
 	(1, 1, 136, 0, '2018-01-09', 0, NULL),
 	(2, 2, 136, 0, '2018-01-09', 0, NULL),
 	(3, 3, 100, 0, '2018-01-09', 0, NULL),
@@ -934,7 +948,7 @@ INSERT INTO hudou_housesold (id, house_id, price, special_price, date, status, l
 	(786, 56, 111.36, 0, '2018-01-30', 1, '2018-01-30 10:38:56'),
 	(787, 57, 111.36, 0, '2018-01-30', 1, '2018-01-30 10:38:56'),
 	(788, 58, 190.9, 0, '2018-01-30', 1, '2018-01-30 10:38:56');
-/*!40000 ALTER TABLE hudou_housesold ENABLE KEYS */;
+/*!40000 ALTER TABLE house_sold ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;

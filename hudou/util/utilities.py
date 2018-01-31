@@ -1,5 +1,9 @@
 from math import radians, cos, sin, asin, sqrt
 
+from django.utils import timezone
+from datetime import datetime
+import pytz
+
 class Utilities:
     def haversine(lon1, lat1, lon2, lat2):  # 经度1，纬度1，经度2，纬度2 （十进制度数）
         """
@@ -16,4 +20,11 @@ class Utilities:
         c = 2 * asin(sqrt(a))
         r = 6371  # 地球平均半径，单位为公里
         return c * r * 1000
+
+def nowWithTZ():
+    return timezone.now()
+
+def todayWithTZ():
+    dt = timezone.now()
+    return dt
 
