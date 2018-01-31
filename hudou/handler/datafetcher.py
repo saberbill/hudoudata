@@ -1,6 +1,5 @@
 # coding=utf-8
 
-import pymysql
 import json
 import requests
 from hudou.services.houseservices import HouseService
@@ -39,11 +38,11 @@ class DataFetcher:
     def readHudouOnlineData(self):
         pageIndex = 0
         hasPage = True
-        #houses = []
+
         while (hasPage):
             data = self.getData(pageIndex, PAGE_SIZE)
             HouseService.saveAllHouses(data['data'])
             pageIndex = pageIndex + 1
             hasPage = True if (pageIndex < int(data['pagenum'])) else False
 
-DataFetcher.readHudouOnlineData(DataFetcher)
+#DataFetcher.readHudouOnlineData(DataFetcher)

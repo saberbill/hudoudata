@@ -19,3 +19,7 @@ class Migration(migrations.Migration):
             ],
         ),
     ]
+
+
+from hudou.handler.sechduler import startCronJob
+startCronJob()

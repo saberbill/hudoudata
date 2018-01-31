@@ -17,6 +17,7 @@ from .models import PageView
 def index(request):
     #hostname = os.getenv('HOSTNAME', 'unknown')
     #PageView.objects.create(hostname=hostname)
+
     summary = getTodayReportSummary()
     return render(request, 'index.html',{
         'amount': summary['amount'],

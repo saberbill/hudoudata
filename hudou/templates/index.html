@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>胡豆短租数据日报</title>
     <link rel="stylesheet" href="/static/default.css"/>
+    <script src="/static/Chart.bundle.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -48,8 +49,67 @@
         </div>
     </div>
     <div class="block">
-        <canvas />
+        <canvas id="houseAreaChart" width="400" height="400"></canvas>
     </div>
 </div>
+
+<script>
+    var randomScalingFactor = function() {
+        return Math.ceil(Math.random() * 10.0) * Math.pow(10, Math.ceil(Math.random() * 5));
+    };
+    var config = {
+        type: 'line',
+        data: {
+            labels: ["龙泉(川师)", "温江（西财）", "犀浦（交大）", "双流（川大）"],
+            datasets: [{
+                label: "总房源",
+                backgroundColor: '#f00',
+                borderColor: '#f00',
+                fill: false,
+                data: [
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor()
+                ],
+            }, {
+                label: "已售房",
+                backgroundColor: '#0f0',
+                borderColor: '#0f0',
+                fill: false,
+                data: [
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                    randomScalingFactor(),
+                ],
+            }]
+        },
+        options: {
+            responsive: true,
+            title: {
+                display: true,
+                text: 'Chart.js Line Chart - Logarithmic'
+            },
+            scales: {
+                xAxes: [{
+                    display: true,
+                }],
+                yAxes: [{
+                    display: true,
+                    type: 'logarithmic',
+                }]
+            }
+        }
+    };
+
+    window.onload = function () {
+        var ctx = document.getElementById("houseAreaChart").getContext("2d");
+        //window.myLine = new Chart(ctx, config);
+
+        var houseAreaChart = new Chart(ctx, config);
+    };
+
+</script>
 </body>
 </html>
