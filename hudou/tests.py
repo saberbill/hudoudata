@@ -19,7 +19,8 @@ class PageViewTest(TestCase):
 
 class DbEngine(TestCase):
     def setUp(self):
-        os.environ['ENGINE'] = 'SQLite'
+        #os.environ['ENGINE'] = 'SQLite'
+        os.environ['ENGINE'] = 'postgresql'
 
     def test_engine_setup(self):
         settings = info()
