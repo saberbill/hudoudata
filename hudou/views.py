@@ -22,13 +22,16 @@ def index(request):
     #hostname = os.getenv('HOSTNAME', 'unknown')
     #PageView.objects.create(hostname=hostname)
     today = todayWithTZ()
-    dailySummary = getDailySummary(today)[0]
+    dailySummary = HouseService.listDailySummary(today)[0]
     soldPercent = round(dailySummary.soldRooms/dailySummary.totalRooms, 2)
+    lastUpdated = dailySummary.lastUpdated.strftime("%Y-%m-%d")
+
     return render(request, 'index.html',{
         'turnover': dailySummary.turnover,
         'totalRooms': dailySummary.totalRooms,
         'soldRooms': dailySummary.soldRooms,
         'soldPercent': format(soldPercent, '.00%'),
+        'lastUpdated': lastUpdated,
     })
     '''
     return render(request, 'hudou/index.html', {
