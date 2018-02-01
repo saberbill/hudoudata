@@ -24,7 +24,7 @@ def index(request):
     today = todayWithTZ()
     dailySummary = HouseService.listDailySummary(today)[0]
     soldPercent = round(dailySummary.soldRooms/dailySummary.totalRooms, 2)
-    lastUpdated = dailySummary.lastUpdated.strftime("%Y-%m-%d")
+    lastUpdated = dailySummary.lastUpdated.strftime("%Y-%m-%d %H:%M:%S")
 
     return render(request, 'index.html',{
         'turnover': dailySummary.turnover,
