@@ -1,20 +1,14 @@
-import os
+
+from hudou.handler.sechduler import startFetchDataCronJob
+startFetchDataCronJob()
+
 import datetime
 from django.http import JsonResponse
-from hudou.model.valueobjects import House, HouseSold, Area, DailySummary
-from hudou.handler.datafetcher import DataFetcher
+from hudou.model.valueobjects import House, Area
 from hudou.services.houseservices import HouseService
-from hudou.services.apis import getDailySummary
 from django.shortcuts import render
-from django.conf import settings
-from django.http import HttpResponse
 from hudou.util.utilities import todayWithTZ
-from django.core import serializers
 
-import json
-
-from . import database
-from .models import PageView
 
 # Create your views here.
 

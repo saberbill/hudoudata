@@ -7,6 +7,7 @@ def fetchData():
     DataFetcher.readHudouOnlineData(DataFetcher)
 
 def startFetchDataCronJob():
+    fetchData()
     scheduler = BackgroundScheduler()
     scheduler.add_job(fetchData, 'interval', minutes=30)
     scheduler.start()

@@ -13,51 +13,51 @@
 
 
 -- 导出 hudou 的数据库结构
-CREATE DATABASE IF NOT EXISTS `hudou` /*!40100 DEFAULT CHARACTER SET utf8 */;
-USE `hudou`;
+CREATE DATABASE IF NOT EXISTS hudou /*!40100 DEFAULT CHARACTER SET utf8 */;
+USE hudou;
 
 -- 导出  表 hudou.area 结构
-CREATE TABLE IF NOT EXISTS `area` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `lid` varchar(40) DEFAULT NULL,
-  `area_name` varchar(20) DEFAULT NULL,
-  `long` float DEFAULT NULL,
-  `lat` float DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNQ_LID` (`lid`)
+CREATE TABLE IF NOT EXISTS area (
+  id int(11) unsigned NOT NULL AUTO_INCREMENT,
+  lid varchar(40) DEFAULT NULL,
+  area_name varchar(20) DEFAULT NULL,
+  long float DEFAULT NULL,
+  lat float DEFAULT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY UNQ_LID (lid)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- 正在导出表  hudou.area 的数据：~4 rows (大约)
-/*!40000 ALTER TABLE `area` DISABLE KEYS */;
-INSERT INTO `area` (`id`, `lid`, `area_name`, `long`, `lat`) VALUES
+/*!40000 ALTER TABLE area DISABLE KEYS */;
+INSERT INTO area (id, lid, area_name, long, lat) VALUES
 	(1, '2793425b-91b6-4497-8a0b-7807221c7e25', '龙泉（川师）', 104.201, 30.566),
 	(2, '7facc059-b025-485d-9526-7906773e9390', '温江（西财）', 103.821, 30.6813),
 	(3, '06b57da2-19a7-4bcd-9648-1eb252bf0ccf', '犀浦（交大）', 103.986, 30.7658),
 	(4, '5b60ea9d-20ca-4de1-83cb-c8569823ea38', '双流（川大江安）', 104, 30.5566);
-/*!40000 ALTER TABLE `area` ENABLE KEYS */;
+/*!40000 ALTER TABLE area ENABLE KEYS */;
 
 -- 导出  表 hudou.house 结构
-CREATE TABLE IF NOT EXISTS `house` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `uuid` varchar(40) NOT NULL DEFAULT '0',
-  `lid` varchar(40) NOT NULL DEFAULT '0',
-  `area_id` int(10) unsigned DEFAULT NULL,
-  `area_name` varchar(30) DEFAULT NULL,
-  `title` varchar(128) NOT NULL,
-  `price` float unsigned NOT NULL DEFAULT '0',
-  `lang` float unsigned NOT NULL DEFAULT '0',
-  `lat` float unsigned NOT NULL DEFAULT '0',
-  `model` varchar(30) NOT NULL DEFAULT '0',
-  `status` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '1: on sale; 2: closed',
-  `create_time` datetime NOT NULL,
-  `last_updated` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNQ_UUID` (`uuid`),
-  KEY `UNQ_LID` (`lid`)
+CREATE TABLE IF NOT EXISTS house (
+  id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  uuid varchar(40) NOT NULL DEFAULT '0',
+  lid varchar(40) NOT NULL DEFAULT '0',
+  area_id int(10) unsigned DEFAULT NULL,
+  area_name varchar(30) DEFAULT NULL,
+  title varchar(128) NOT NULL,
+  price float unsigned NOT NULL DEFAULT '0',
+  lang float unsigned NOT NULL DEFAULT '0',
+  lat float unsigned NOT NULL DEFAULT '0',
+  model varchar(30) NOT NULL DEFAULT '0',
+  status tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT '1: on sale; 2: closed',
+  create_time datetime NOT NULL,
+  last_updated timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  UNIQUE KEY UNQ_UUID (uuid),
+  KEY UNQ_LID (lid)
 ) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
 
 -- 正在导出表  hudou.house 的数据：~67 rows (大约)
-/*!40000 ALTER TABLE `house` DISABLE KEYS */;
+/*!40000 ALTER TABLE house DISABLE KEYS */;
 INSERT INTO house (id, uuid, lid, area_id, area_name, title, price, lang, lat, model, status, create_time, last_updated) VALUES
 	(1, '38a3502e-9851-4c36-8d2c-79b76392b8c5', '2793425b-91b6-4497-8a0b-7807221c7e25', 1, '龙泉（川师）', '【龙泉】师大花园朴宿投影一居室2305b', 136, 104.198, 30.5732, '一室一厅一卫', 1, '2018-01-10 11:19:07', '2018-01-10 11:19:07'),
 	(2, 'ddce0bdc-dc6c-4f00-949c-348b13a33261', '2793425b-91b6-4497-8a0b-7807221c7e25', 1, '龙泉（川师）', '【龙泉】师大花园芷间一居室3122', 136, 104.198, 30.5742, '一室一厅一卫', 1, '2018-01-10 11:19:07', '2018-01-10 11:19:07'),
@@ -126,24 +126,24 @@ INSERT INTO house (id, uuid, lid, area_id, area_name, title, price, lang, lat, m
 	(65, '48404bf5-010b-43ca-b730-385be7a2a003', '6dc1e01a-7af7-4702-9da2-a9d950fab7c9', 1, '龙泉（川师）', '【龙泉】爱丽丝风大床房', 145.454, 104.198, 30.574, '一室一厅一卫', 1, '2018-01-24 11:40:49', '2018-01-24 11:40:49'),
 	(66, '1e5a257c-cedd-456e-9f97-2e4625ced8f1', '6dc1e01a-7af7-4702-9da2-a9d950fab7c9', 1, '龙泉（川师）', '【龙泉】圣托里尼风双大床房', 145.454, 104.198, 30.574, '一室一厅一卫', 1, '2018-01-24 11:40:49', '2018-01-24 11:40:49'),
 	(67, '048e45c4-269b-42fd-8892-31b6e4babbb4', '6dc1e01a-7af7-4702-9da2-a9d950fab7c9', 1, '龙泉（川师）', '【龙泉】天鹅堡风大床房', 145.454, 104.198, 30.574, '一室一厅一卫', 1, '2018-01-24 11:40:49', '2018-01-24 11:40:49');
-/*!40000 ALTER TABLE `house` ENABLE KEYS */;
+/*!40000 ALTER TABLE house ENABLE KEYS */;
 
 -- 导出  表 hudou.housesold 结构
-CREATE TABLE IF NOT EXISTS `housesold` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `house_id` int(10) unsigned DEFAULT NULL,
-  `price` float unsigned DEFAULT NULL,
-  `special_price` float unsigned DEFAULT NULL,
-  `date` date DEFAULT NULL,
-  `status` tinyint(4) DEFAULT NULL COMMENT '0: available; 1: sold',
-  `last_updated` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `UNQ_HOUSE_ID_DATE` (`house_id`,`date`)
+CREATE TABLE IF NOT EXISTS housesold (
+  id int(10) unsigned NOT NULL AUTO_INCREMENT,
+  house_id int(10) unsigned DEFAULT NULL,
+  price float unsigned DEFAULT NULL,
+  special_price float unsigned DEFAULT NULL,
+  date date DEFAULT NULL,
+  status tinyint(4) DEFAULT NULL COMMENT '0: available; 1: sold',
+  last_updated timestamp NULL DEFAULT NULL,
+  PRIMARY KEY (id),
+  UNIQUE KEY UNQ_HOUSE_ID_DATE (house_id,date)
 ) ENGINE=InnoDB AUTO_INCREMENT=789 DEFAULT CHARSET=utf8;
 
 -- 正在导出表  hudou.housesold 的数据：~788 rows (大约)
-/*!40000 ALTER TABLE `housesold` DISABLE KEYS */;
-INSERT INTO `housesold` (`id`, `house_id`, `price`, `special_price`, `date`, `status`, `last_updated`) VALUES
+/*!40000 ALTER TABLE housesold DISABLE KEYS */;
+INSERT INTO housesold (id, house_id, price, special_price, date, status, last_updated) VALUES
 	(1, 1, 136, 0, '2018-01-09', 0, NULL),
 	(2, 2, 136, 0, '2018-01-09', 0, NULL),
 	(3, 3, 100, 0, '2018-01-09', 0, NULL),
@@ -932,7 +932,7 @@ INSERT INTO `housesold` (`id`, `house_id`, `price`, `special_price`, `date`, `st
 	(786, 56, 111.36, 0, '2018-01-30', 1, '2018-01-30 10:38:56'),
 	(787, 57, 111.36, 0, '2018-01-30', 1, '2018-01-30 10:38:56'),
 	(788, 58, 190.9, 0, '2018-01-30', 1, '2018-01-30 10:38:56');
-/*!40000 ALTER TABLE `housesold` ENABLE KEYS */;
+/*!40000 ALTER TABLE housesold ENABLE KEYS */;
 
 /*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
 /*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
