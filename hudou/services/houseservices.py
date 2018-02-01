@@ -72,6 +72,7 @@ class HouseService:
             if (item.status == 1):
                 soldRooms = soldRooms + 1
                 turnover = turnover + item.price
+        turnover = round(turnover, 2)
         HouseService.saveDailySummary({
             'totalRooms': totalRooms,
             'soldRooms': soldRooms,

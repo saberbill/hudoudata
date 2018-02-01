@@ -86,7 +86,7 @@ CREATE TABLE daily_summary (
     id integer DEFAULT nextval('hudou_daliy_summary_seq'::regclass) NOT NULL,
     total_rooms integer,
     sold_rooms integer,
-    turnover double precision,
+    turnover real,
     date date NOT NULL,
     last_updated timestamp(0) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL,
     CONSTRAINT hudou_daliy_summary_id_check CHECK ((id > 0)),
@@ -122,7 +122,7 @@ CREATE TABLE house (
     area_id integer,
     area_name character varying(30) DEFAULT NULL::character varying,
     title character varying(128) NOT NULL,
-    price double precision DEFAULT '0'::double precision NOT NULL,
+    price real DEFAULT '0'::real NOT NULL,
     lang double precision DEFAULT '0'::double precision NOT NULL,
     lat double precision DEFAULT '0'::double precision NOT NULL,
     model character varying(30) DEFAULT '0'::character varying NOT NULL,
@@ -133,7 +133,7 @@ CREATE TABLE house (
     CONSTRAINT hudou_house_id_check CHECK ((id > 0)),
     CONSTRAINT hudou_house_lang_check CHECK ((lang > (0)::double precision)),
     CONSTRAINT hudou_house_lat_check CHECK ((lat > (0)::double precision)),
-    CONSTRAINT hudou_house_price_check CHECK ((price > (0)::double precision)),
+    CONSTRAINT hudou_house_price_check CHECK ((price > (0)::real)),
     CONSTRAINT hudou_house_status_check CHECK ((status > 0))
 );
 
@@ -161,15 +161,15 @@ ALTER TABLE hudou_housesold_seq OWNER TO hudou_user;
 CREATE TABLE house_sold (
     id integer DEFAULT nextval('hudou_housesold_seq'::regclass) NOT NULL,
     house_id integer,
-    price double precision,
-    special_price double precision,
+    price real,
+    special_price real,
     date date,
     status smallint,
     last_updated timestamp(0) without time zone DEFAULT NULL::timestamp without time zone,
     CONSTRAINT hudou_housesold_house_id_check CHECK ((house_id > 0)),
     CONSTRAINT hudou_housesold_id_check CHECK ((id > 0)),
-    CONSTRAINT hudou_housesold_price_check CHECK ((price >= (0)::double precision)),
-    CONSTRAINT hudou_housesold_special_price_check CHECK ((special_price >= (0)::double precision))
+    CONSTRAINT hudou_housesold_price_check CHECK ((price >= (0)::real)),
+    CONSTRAINT hudou_housesold_special_price_check CHECK ((special_price >= (0)::real))
 );
 
 

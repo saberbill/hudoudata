@@ -27,7 +27,7 @@ def index(request):
     lastUpdated = dailySummary.lastUpdated.strftime("%Y-%m-%d %H:%M:%S")
 
     return render(request, 'index.html',{
-        'turnover': dailySummary.turnover,
+        'turnover': round(dailySummary.turnover, 2),
         'totalRooms': dailySummary.totalRooms,
         'soldRooms': dailySummary.soldRooms,
         'soldPercent': format(soldPercent, '.00%'),
