@@ -21,8 +21,8 @@ class Migration(migrations.Migration):
     ]
 
 
-from hudou.handler.sechduler import startCronJob
-startCronJob()
+from hudou.handler.sechduler import startFetchDataCronJob
+startFetchDataCronJob()
 
 from hudou.handler.datafetcher import DataFetcher
 DataFetcher.readHudouOnlineData(DataFetcher)

@@ -6,7 +6,7 @@ from hudou.handler.datafetcher import DataFetcher
 def fetchData():
     DataFetcher.readHudouOnlineData(DataFetcher)
 
-def startCronJob():
+def startFetchDataCronJob():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(fetchData, 'cron', second="*/60", minute="*", hour="*")
+    scheduler.add_job(fetchData, 'interval', minutes=30)
     scheduler.start()
