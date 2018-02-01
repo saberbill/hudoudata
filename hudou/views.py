@@ -33,13 +33,6 @@ def index(request):
         'soldPercent': format(soldPercent, '.00%'),
         'lastUpdated': lastUpdated,
     })
-    '''
-    return render(request, 'hudou/index.html', {
-        'hostname': hostname,
-        'database': database.info(),
-        'count': PageView.objects.count()
-    })
-    '''
 
 def getLatestSummary(request):
     days = request.GET.get('days')
