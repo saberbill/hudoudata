@@ -92,6 +92,7 @@ DATABASES = {
 '''
 
 DATABASES = {
+    '''
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'hudou',
@@ -100,6 +101,9 @@ DATABASES = {
         'HOST':'127.0.0.1',
         'PORT':'5432',
     }
+    '''
+
+    'default': database.config()
 }
 
 # Password validation
