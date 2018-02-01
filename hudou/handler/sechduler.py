@@ -8,5 +8,5 @@ def fetchData():
 
 def startCronJob():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(fetchData, 'cron', second="*/5", minute="*", hour="*")
+    scheduler.add_job(fetchData, 'cron', second="*/60", minute="*", hour="*")
     scheduler.start()

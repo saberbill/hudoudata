@@ -47,7 +47,6 @@ class DataFetcher:
             pageIndex = pageIndex + 1
             hasPage = True if (pageIndex < int(data['pagenum'])) else False
 
-        print('generate daily summary.....')
         # generate daily summary
         today = todayWithTZ()
         HouseService.generateDailySummary(today)

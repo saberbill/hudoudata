@@ -172,7 +172,6 @@ class HouseService:
         houses = cursor.fetchall()
         toalHouseAreas = {}
         soldHouseAreas = {}
-        print(houses)
         for item in houses:
             key = item[2]
             if key in toalHouseAreas:

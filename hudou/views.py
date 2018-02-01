@@ -44,7 +44,6 @@ def getLatestSummary(request):
         days = '7'
     summaries = HouseService.listLatestDailySummary(int(days))
     #content = serializers.serialize("json", summaries)
-    #print(content)
     dates = []
     soldRooms = []
     totalRooms = []
@@ -65,9 +64,6 @@ def getLatestSummary(request):
 
 def getHouseArea(request):
     today = todayWithTZ().strftime("%Y-%m-%d")
-    #houseSolds = HouseService.listHousesSoldByDate(today)
-    #houses = HouseService.list(HouseService)
-    #print(content)
     areas = []
     areaCounts = []
     totalAreas = HouseService.getOnlineHouses(today)
@@ -131,5 +127,4 @@ def getReportSummary(request):
     content = {'total': total, 'sold': sold, 'amount': round(amount, 2), 'soldPercent': round(sold/float(total), 2),
                'soldHouseAreas': soldHouseAreaCountMap}
 
-    print(content)
     return JsonResponse(content, content_type='application/json; charset=utf-8')
