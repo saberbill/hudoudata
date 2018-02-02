@@ -27,13 +27,13 @@ utc_tz = pytz.timezone('UTC')
 #tz_name = timezone.now().tzname()
 
 def nowWithChineseTZ():
-    return toChineseZone(timezone.now())
+    return toChineseTZ(timezone.now())
 
 def todayWithChineseTZ():
-    return toChineseZone(timezone.now())
+    return toChineseTZ(timezone.now())
 
 
-def toChineseZone(datetime):
+def toChineseTZ(datetime):
     datetime = datetime.replace(tzinfo=utc_tz)
     cst = datetime.astimezone(cst_tz)
     return cst
