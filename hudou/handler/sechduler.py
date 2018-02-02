@@ -9,5 +9,5 @@ def fetchData():
 def startFetchDataCronJob():
     fetchData()
     scheduler = BackgroundScheduler()
-    scheduler.add_job(fetchData, 'interval', minutes=30)
+    scheduler.add_job(fetchData, 'interval', minutes=10)
     scheduler.start()

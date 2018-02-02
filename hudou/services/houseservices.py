@@ -1,8 +1,6 @@
-import datetime
 import sys
-from django.utils import timezone
 from hudou.model.valueobjects import House, HouseSold, Area, DailySummary
-from hudou.util.utilities import Utilities, todayWithTZ, nowWithTZ
+from hudou.util.utilities import Utilities, todayWithChineseTZ, nowWithChineseTZ
 from django.db import connection, transaction
 
 class HouseService:
@@ -13,7 +11,7 @@ class HouseService:
         return House.objects.count('status=1')
 
     def saveHouse(houseData):
-        now = nowWithTZ()
+        now = nowWithChineseTZ()
         try:
             house = House.objects.get(uuid=houseData['id'])
         except House.DoesNotExist:
@@ -39,8 +37,8 @@ class HouseService:
         return house.id
 
     def saveHouseSold(houseId, data):
-        now = nowWithTZ()
-        today = todayWithTZ()
+        now = nowWithChineseTZ()
+        today = todayWithChineseTZ()
         try:
             houseSold = HouseSold.objects.get(houseId=houseId, date=today)
             houseSold.price = float(data['price4hour'])
@@ -80,8 +78,8 @@ class HouseService:
             'date': date})
 
     def saveDailySummary(data):
-        now = nowWithTZ()
-        today = todayWithTZ()
+        now = nowWithChineseTZ()
+        today = todayWithChineseTZ()
         try:
             dailySummary = DailySummary.objects.get(date=data['date'])
             dailySummary.totalRooms = data['totalRooms']

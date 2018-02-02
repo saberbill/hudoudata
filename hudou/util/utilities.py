@@ -22,15 +22,15 @@ class Utilities:
         r = 6371  # 地球平均半径，单位为公里
         return c * r * 1000
 
-def nowWithTZ():
-    return timezone.now()
-
-def todayWithTZ():
-    dt = timezone.now()
-    return dt
-
 cst_tz = pytz.timezone('Asia/Shanghai')
 utc_tz = pytz.timezone('UTC')
+
+def nowWithChineseTZ():
+    return toChineseZone(timezone.now())
+
+def todayWithChineseTZ():
+    return toChineseZone(timezone.now())
+
 
 def toChineseZone(datetime):
     datetime = datetime.replace(tzinfo=utc_tz)
