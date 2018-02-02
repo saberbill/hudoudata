@@ -2,12 +2,12 @@
 from hudou.handler.sechduler import startFetchDataCronJob
 startFetchDataCronJob()
 
-import datetime
+from datetime import datetime
 from django.http import JsonResponse
 from hudou.model.valueobjects import House, Area
 from hudou.services.houseservices import HouseService
 from django.shortcuts import render
-from hudou.util.utilities import todayWithTZ
+from hudou.util.utilities import *
 
 
 # Create your views here.
@@ -18,7 +18,8 @@ def index(request):
     today = todayWithTZ()
     dailySummary = HouseService.listDailySummary(today)[0]
     soldPercent = round(dailySummary.soldRooms/dailySummary.totalRooms, 2)
-    lastUpdated = dailySummary.lastUpdated.strftime("%Y-%m-%d %H:%M:%S")
+    lastUpdated = toChineseZone(dailySummary.lastUpdated)
+    lastUpdated = lastUpdated.strftime("%Y-%m-%d %H:%M:%S")
 
     return render(request, 'index.html',{
         'turnover': round(dailySummary.turnover, 2),

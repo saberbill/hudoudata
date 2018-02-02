@@ -4,6 +4,7 @@ from django.utils import timezone
 from datetime import datetime
 import pytz
 
+
 class Utilities:
     def haversine(lon1, lat1, lon2, lat2):  # 经度1，纬度1，经度2，纬度2 （十进制度数）
         """
@@ -28,3 +29,10 @@ def todayWithTZ():
     dt = timezone.now()
     return dt
 
+cst_tz = timezone('Asia/Shanghai')
+utc_tz = timezone('UTC')
+
+def toChineseZone(datetime):
+    datetime = datetime.replace(tzinfo=utc_tz)
+    cst = datetime.astimezone(cst_tz)
+    return cst
