@@ -6,7 +6,7 @@ from django.http import JsonResponse
 from hudou.model.valueobjects import House, Area
 from hudou.services.houseservices import HouseService
 from django.shortcuts import render
-from hudou.util.utilities import todayWithChineseTZ, nowWithChineseTZ
+from hudou.util.utilities import todayWithChineseTZ, nowWithChineseTZ, toChineseTZ
 
 
 # Create your views here.
@@ -15,7 +15,7 @@ def index(request):
     today = todayWithChineseTZ()
     dailySummary = HouseService.listDailySummary(today)[0]
     soldPercent = round(dailySummary.soldRooms/dailySummary.totalRooms, 2)
-    lastUpdated = todayWithChineseTZ(dailySummary.lastUpdated)
+    lastUpdated = toChineseTZ(dailySummary.lastUpdated)
     lastUpdated = lastUpdated.strftime("%Y-%m-%d %H:%M:%S")
 
     return render(request, 'index.html',{
