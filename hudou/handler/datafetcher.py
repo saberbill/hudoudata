@@ -25,7 +25,6 @@ URL = 'http://mp.hudoufun.cn/tenement/js/listview_h5.ashx?' \
 
 class DataFetcher:
     def fetch(url):
-        print('Fetching URL: ' + url)
         requests.session()
         resp = requests.get(url)
         resp.encoding = 'utf-8'
@@ -41,6 +40,7 @@ class DataFetcher:
         pageIndex = 0
         hasPage = True
 
+        print('Fetching data...')
         while (hasPage):
             data = self.getData(pageIndex, PAGE_SIZE)
             HouseService.saveAllHouses(data['data'])
@@ -50,5 +50,6 @@ class DataFetcher:
         # generate daily summary
         today = todayWithTZ()
         HouseService.generateDailySummary(today)
+        print('Data fetching completed.')
 
 #DataFetcher.readHudouOnlineData(DataFetcher)

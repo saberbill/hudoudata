@@ -143,7 +143,7 @@ CREATE TABLE IF NOT EXISTS housesold (
 
 -- 正在导出表  hudou.housesold 的数据：~788 rows (大约)
 /*!40000 ALTER TABLE housesold DISABLE KEYS */;
-INSERT INTO housesold (id, house_id, price, special_price, date, status, last_updated) VALUES
+INSERT INTO house_sold (id, house_id, price, special_price, date, status, last_updated) VALUES
 	(1, 1, 136, 0, '2018-01-09', 0, NULL),
 	(2, 2, 136, 0, '2018-01-09', 0, NULL),
 	(3, 3, 100, 0, '2018-01-09', 0, NULL),
