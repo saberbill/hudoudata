@@ -24,7 +24,7 @@ class Utilities:
 
 cst_tz = pytz.timezone('Asia/Shanghai')
 utc_tz = pytz.timezone('UTC')
-tz_name = timezone.now().tzname()
+#tz_name = timezone.now().tzname()
 
 def nowWithChineseTZ():
     return toChineseZone(timezone.now())
@@ -34,6 +34,6 @@ def todayWithChineseTZ():
 
 
 def toChineseZone(datetime):
-    datetime = datetime.replace(tzinfo=tz_name)
+    datetime = datetime.replace(tzinfo=utc_tz)
     cst = datetime.astimezone(cst_tz)
     return cst
