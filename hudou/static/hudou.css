@@ -17,7 +17,7 @@ div.title {
     color: #ffffff;
     text-align: center;
     padding: 20px 0px;
-    font-size: 30px;
+    font-size: 50px;
 }
 .center {
     text-align: center;
@@ -43,11 +43,11 @@ div.title {
 }
 .value {
     font-weight: bold;
-    font-size: 28px;
+    font-size: 36px;
     color: #09bb07;
 }
 .strong {
-    font-size: 36px;
+    font-size: 46px;
     color: #e64340;
 }
 .box{

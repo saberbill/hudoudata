@@ -75,78 +75,18 @@
         purple: 'rgb(153, 102, 255)',
         grey: 'rgb(201, 203, 207)'
     };
-    options = {
-        responsive: true,
-        title:
-            {
-                display: true,
-                text: '胡豆短租数据趋势'
-            },
-        tooltips: {
-            mode: 'index',
-            intersect: false,
-        },
-        hover: {
-            mode: 'nearest',
-            intersect: true
-        },
-        scales: {
-            xAxes: [{
-                display: true,
-                scaleLabel: {
-                    display: true,
-                    labelString: '日期'
-                }
-            }],
-            yAxes:
-                [{
-                    display: true,
-                    scaleLabel: {
-                        display: true,
-                        labelString: '房间数'
-                    },
-                    ticks: {
-                        suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
-                        beginAtZero: true   // minimum value will be 0.
-                    }
-                }]
-        }
-    }
-    var houseSoldChartConfig = {
-        type: 'line',
-        data: {
-            labels: [],
-            datasets: [{
-                label: "总房源数",
-                backgroundColor: window.chartColors.red,
-                borderColor: window.chartColors.red,
-                data: [],
-                fill: false,
-            }, {
-                label: "已售房源",
-                fill: false,
-                backgroundColor: window.chartColors.blue,
-                borderColor: window.chartColors.blue,
-                data: [],
-            }]
-        },
-        options: options
-    };
+    //Chart.defaults.global.defaultFontSize = 16
+    titleSize = 30
+    labelSize = 24
 
-    var turnoverChartConfig = {
-        type: 'line',
-        data: {
-            labels: [],
-            datasets: [{
-                label: "销售额",
-                fill: false,
-                backgroundColor: window.chartColors.orange,
-                borderColor: window.chartColors.orange,
-                data: [],
-            }]
-        },
-        options: options
+    legend = {
+        labels: {fontSize: labelSize},
+        scaleLabel: {fontSize: labelSize},
+        pointLabels: {fontSize: labelSize}
     };
+    hover = {mode: 'nearest', intersect: true};
+    tooltips = {mode: 'index', intersect: false, titleFontSize: 20, bodyFontSize: 20};
+
     var houseAreaChartConfig = {
         type: 'doughnut',
         data: {
@@ -165,39 +105,112 @@
         },
         options: {
             responsive: true,
+            tooltips: tooltips,
             legend: {
                 position: 'top',
+                labels: {fontSize: labelSize},
+                scaleLabel: {fontSize: labelSize},
+                pointLabels: {fontSize: labelSize}
             },
-            title: {
-                display: true,
-                text: '房源区域分布图'
-            },
-            animation: {
-                animateScale: true,
-                animateRotate: true
+            title: {display: true, text: '房源区域分布图', fontSize: titleSize},
+            animation: {animateScale: true, animateRotate: true}
+        }
+    };
+
+    var houseSoldChartConfig = {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: "总房源数",
+                backgroundColor: window.chartColors.red,
+                borderColor: window.chartColors.red,
+                data: [],
+                fill: false,
+            }, {
+                label: "已售房源",
+                fill: false,
+                backgroundColor: window.chartColors.blue,
+                borderColor: window.chartColors.blue,
+                data: [],
+            }]
+        },
+        options: {
+            responsive: true,
+            title: {display: true, text: '近7日房源数据趋势图', fontSize: titleSize},
+            tooltips: tooltips,
+            hover: hover,
+            legend: legend,
+            scales: {
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {display: true, labelString: '日期', fontSize: labelSize},
+                    ticks: {fontSize: labelSize}
+                }],
+                yAxes:
+                    [{
+                        display: true,
+                        scaleLabel: {display: true, labelString: '房间数', fontSize: labelSize},
+                        ticks: {
+                            fontSize: labelSize,
+                            suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                            beginAtZero: true   // minimum value will be 0.
+                        }
+                    }]
+            }
+        }
+    };
+
+    var turnoverChartConfig = {
+        type: 'line',
+        data: {
+            labels: [],
+            datasets: [{
+                label: "销售额",
+                fill: false,
+                backgroundColor: window.chartColors.orange,
+                borderColor: window.chartColors.orange,
+                data: [],
+            }]
+        },
+        options: {
+            responsive: true,
+            title: {display: true, text: '近7日销售额趋势图', fontSize: titleSize},
+            tooltips: tooltips,
+            hover: hover,
+            legend: legend,
+            scales: {
+                xAxes: [{
+                    display: true,
+                    scaleLabel: {display: true, labelString: '日期', fontSize: labelSize},
+                    ticks: {fontSize: labelSize}
+                }],
+                yAxes:
+                    [{
+                        display: true,
+                        scaleLabel: {display: true, labelString: '销售额', fontSize: labelSize},
+                        ticks: {
+                            fontSize: labelSize,
+                            suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                            beginAtZero: true   // minimum value will be 0.
+                        }
+                    }]
             }
         }
     };
 
     $(function () {
+
+        var houseAreaChartCtx = document.getElementById("houseAreaChart").getContext("2d");
+        var houseAreaChart = new Chart(houseAreaChartCtx, houseAreaChartConfig);
+
         var houseSoldChartCtx = document.getElementById("houseSoldChart").getContext("2d");
         var houseSoldChart = new Chart(houseSoldChartCtx, houseSoldChartConfig);
-        houseSoldChartConfig.options.title.text = '近7日房源数据趋势图';
-
-        //houseSoldChartConfig.options.scales.yAxes[0].ticks = {
-        // suggestedMin: 0,// minimum will be 0, unless there is a lower value.
-        //beginAtZero: true   // minimum value will be 0.
-        //}
 
 
         var turnoverChartCtx = document.getElementById("turnoverChart").getContext("2d");
         var turnoverChart = new Chart(turnoverChartCtx, turnoverChartConfig);
-        turnoverChartConfig.options.title.text = '近7日销售额趋势图';
-        turnoverChartConfig.options.scales.xAxes[0].scaleLabel = '日期'
-        turnoverChartConfig.options.scales.yAxes[0].scaleLabel = '销售额'
 
-        var houseAreaChartCtx = document.getElementById("houseAreaChart").getContext("2d");
-        var houseAreaChart = new Chart(houseAreaChartCtx, houseAreaChartConfig);
 
         $.ajax({
             url: "/getLatestSummary",
