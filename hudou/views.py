@@ -12,12 +12,10 @@ from hudou.util.utilities import todayWithChineseTZ, nowWithChineseTZ
 # Create your views here.
 
 def index(request):
-    #hostname = os.getenv('HOSTNAME', 'unknown')
-    #PageView.objects.create(hostname=hostname)
     today = todayWithChineseTZ()
     dailySummary = HouseService.listDailySummary(today)[0]
     soldPercent = round(dailySummary.soldRooms/dailySummary.totalRooms, 2)
-    lastUpdated = dailySummary.lastUpdated
+    lastUpdated = todayWithChineseTZ(dailySummary.lastUpdated)
     lastUpdated = lastUpdated.strftime("%Y-%m-%d %H:%M:%S")
 
     return render(request, 'index.html',{
