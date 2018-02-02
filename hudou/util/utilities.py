@@ -29,8 +29,8 @@ def todayWithTZ():
     dt = timezone.now()
     return dt
 
-cst_tz = timezone('Asia/Shanghai')
-utc_tz = timezone('UTC')
+cst_tz = pytz.timezone('Asia/Shanghai')
+utc_tz = pytz.timezone('UTC')
 
 def toChineseZone(datetime):
     datetime = datetime.replace(tzinfo=utc_tz)
