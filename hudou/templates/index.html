@@ -104,6 +104,10 @@
                     scaleLabel: {
                         display: true,
                         labelString: '房间数'
+                    },
+                    ticks: {
+                        suggestedMin: 0,    // minimum will be 0, unless there is a lower value.
+                        beginAtZero: true   // minimum value will be 0.
                     }
                 }]
         }
@@ -123,12 +127,6 @@
                 fill: false,
                 backgroundColor: window.chartColors.blue,
                 borderColor: window.chartColors.blue,
-                data: [],
-            }, {
-                label: "销售额",
-                fill: false,
-                backgroundColor: window.chartColors.orange,
-                borderColor: window.chartColors.orange,
                 data: [],
             }]
         },
@@ -185,6 +183,12 @@
         var houseSoldChartCtx = document.getElementById("houseSoldChart").getContext("2d");
         var houseSoldChart = new Chart(houseSoldChartCtx, houseSoldChartConfig);
         houseSoldChartConfig.options.title.text = '近7日房源数据趋势图';
+
+        //houseSoldChartConfig.options.scales.yAxes[0].ticks = {
+        // suggestedMin: 0,// minimum will be 0, unless there is a lower value.
+        //beginAtZero: true   // minimum value will be 0.
+        //}
+
 
         var turnoverChartCtx = document.getElementById("turnoverChart").getContext("2d");
         var turnoverChart = new Chart(turnoverChartCtx, turnoverChartConfig);
