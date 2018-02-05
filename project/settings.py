@@ -57,6 +57,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'hudou.interceptor.GeneralInvterceptor'
 ]
 
 ROOT_URLCONF = 'project.urls'
