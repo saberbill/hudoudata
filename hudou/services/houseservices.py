@@ -226,7 +226,7 @@ class HouseService:
                 'count': item[1],
                 'city': item[2],
                 'provider': item[3],
-                'accessTime': item[4].strftime('%Y-%m-%d %H:%M:%S'),
+                'accessTime': toChineseTZ(item[4]).strftime('%Y-%m-%d %H:%M:%S'),
             })
 
         return accessLogs
