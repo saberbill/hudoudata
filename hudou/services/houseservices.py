@@ -1,6 +1,6 @@
 import sys
 from hudou.model.valueobjects import House, HouseSold, Area, DailySummary, AccessHistory
-from hudou.util.utilities import Utilities, todayWithChineseTZ, nowWithChineseTZ, dateOfDaysBeforeToday
+from hudou.util.utilities import Utilities, todayWithChineseTZ, nowWithChineseTZ, dateOfDaysBeforeToday, toChineseTZ
 from django.db import connection, transaction
 
 class HouseService:
@@ -220,9 +220,10 @@ class HouseService:
 
         rows = cursor.fetchall()
         accessLogs = []
+
         for item in rows:
             accessLogs.append({
-                'ip': item[0],
+                'ip': desensitize(item[0]),
                 'count': item[1],
                 'city': item[2],
                 'provider': item[3],
@@ -230,3 +231,8 @@ class HouseService:
             })
 
         return accessLogs
+
+def desensitize(ip):
+    items = ip.split('.')
+    ip = items[0] + '.' + items[1] + '.*.*'
+    return ip
