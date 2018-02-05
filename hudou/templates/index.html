@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>胡豆短租数据日报</title>
-    <link rel="stylesheet" href="/static/hudou.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/hudou.css?t=2"/>
     <script src="/static/Chart.bundle.min.js"></script>
     <script src="/static/jquery-3.3.1.min.js"></script>
 </head>
@@ -62,6 +62,10 @@
     </div>
     <div class="block">
         <canvas id="turnoverChart" width="200" height="100"></canvas>
+    </div>
+    <div class="block">
+        <div id="access-logs" class="center">
+        </div>
     </div>
 </div>
 
@@ -218,7 +222,7 @@
             datatype: "JSON",
             data: {days: 7},
             success: function (data) {
-                console.log(data);
+                //console.log(data);
                 houseSoldChartConfig.data.labels = data.dates;
                 houseSoldChartConfig.data.datasets[0].data = data.totalRooms;
                 houseSoldChartConfig.data.datasets[1].data = data.soldRooms;
@@ -239,8 +243,7 @@
             datatype: "JSON",
             data: {},
             success: function (data) {
-                console.log(data);
-                //var areas =
+                //console.log(data);
                 houseAreaChartConfig.data.labels = data.areas;
                 houseAreaChartConfig.data.datasets[0].data = data.areaCounts;
                 houseAreaChart.update();
@@ -249,8 +252,65 @@
                 alert("提交失败！");
             }
         });
+
+        $.ajax({
+                url: "/getAccessHistory",
+                type: "GET",
+                datatype: "JSON",
+                data: {},
+                success: function (data) {
+                    //console.log(data);
+                    var block = $('div#access-logs')
+                    var len = data.data.length;
+                    block.append('<div>今日共 <strong>' + len + '</strong> 人访问该日报。</div>');
+                    if (len > 0) {
+                        $('div', block).append('<div id="show-details-link"><a href="#">显示详细</a></div>');
+                        var $accessDetails = $('<div class="access-details hide"></div>');
+                        block.append($accessDetails)
+                        $.each(data.data, function (i, v) {
+                            var $row = $('<div class="row"></div>');
+                            $accessDetails.append($row);
+                            $row.append('<div class="ip">' + v.ip + '</div>');
+                            $row.append('<div class="count">' + v.count + ' 次</div>');
+                            $row.append('<div class="city">' + v.city + '</div>');
+                            $row.append('<div class="provider">' + v.provider + '</div>');
+                            $row.append('<div class="access-time">' + v.accessTime + '(最后访问)</div>');
+                        });
+
+                        $('#show-details-link a').click(function () {
+                            var $link = $(this);
+                            var $accessDetails = $('div.access-details');
+                            if ($accessDetails.hasClass('hide')) {
+                                $accessDetails.removeClass('hide').addClass('show');
+                                $link.text('隐藏详细');
+                            } else {
+                                $accessDetails.removeClass('show').addClass('hide');
+                                $link.text('显示详细');
+                            }
+                            return false;
+                        });
+                    }
+                },
+
+                error: function () {
+                    alert("提交失败！");
+                }
+            }
+        );
     });
 
+    /*
+    function addCSS() {
+        var link = document.createElement('link');
+        link.type = 'text/css';
+        link.rel = 'stylesheet';
+        var timeStampInMs = window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now();
+
+        link.href = '/static/hudou.css?t=' + timeStampInMs;
+        document.getElementsByTagName("head")[0].appendChild(link);
+    }
+    addCSS();
+    */
 </script>
 </body>
 </html>

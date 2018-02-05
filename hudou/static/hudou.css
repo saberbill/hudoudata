@@ -7,10 +7,16 @@ body {
     margin-left: 0px;
 }
 
+a{
+    text-decoration:none;
+    color:#4dbdec;
+}
+
 div.container {
     display: block;
     margin：0 auto;
 }
+
 div.title {
     background-color: #09bb07;
     font-weight: bold;
@@ -19,38 +25,45 @@ div.title {
     padding: 20px 0px;
     font-size: 50px;
 }
+
 .center {
     text-align: center;
 }
+
 .block {
     margin: 10px 5px;
     background-color: #fff;
     padding: 20px 0px;
-    border-radius:5px;
+    border-radius: 5px;
     min-height: 10px;
 }
 
 .data {
-    text-align:center;
+    text-align: center;
 }
+
 .label {
     color: #666;
     font-size: 18px;
 }
+
 .unit {
     font-size: 16px;
     color: #333;
 }
+
 .value {
     font-weight: bold;
     font-size: 36px;
     color: #09bb07;
 }
+
 .strong {
     font-size: 46px;
     color: #e64340;
 }
-.box{
+
+.box {
     margin-top: 10px;
     display: flex;
     display: -webkit-flex; /* Safari */
@@ -64,4 +77,54 @@ div.title {
     color: #444;
     font-size: 12px;
     padding-top: 10px;
+}
+
+div#access-logs {
+    color: #888;
+    font-size: 12px;
+    padding-top: 10px;
+}
+
+div#show-details-link {
+    display: inline-block;
+}
+
+div.row {
+    margin-top: 10px;
+    display: flex;
+    display: -webkit-flex; /* Safari */
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: space-around;
+    align-items: center;
+}
+
+div.row > div {
+    text-align: right;
+}
+
+.ip {
+    width: 100px;
+}
+
+.count {
+    width: 100px;
+}
+
+.city {
+    width: 100px;
+}
+
+.provider {
+    width: 50px;
+}
+
+.access-time {
+    width: 200px;
+}
+.hide{
+    display: none;
+}
+.show{
+    display: block;
 }

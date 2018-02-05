@@ -208,3 +208,25 @@ class HouseService:
             soldHouseAreas.setdefault(key, count)
 
         return toalHouseAreas
+
+
+    def getAccessHistory(dateFrom, dateTo):
+        cursor = connection.cursor()
+        cursor.execute("SELECT ip, COUNT(ip) count, MAX(city) city, MAX(provider) provider, max(access_time) access_time "
+                       "FROM access_history "
+                       "WHERE ip IN (SELECT DISTINCT ip FROM access_history) "
+                       "AND access_time>='%s' AND access_time<='%s' GROUP BY ip "
+                       "" % (dateFrom, dateTo))
+
+        rows = cursor.fetchall()
+        accessLogs = []
+        for item in rows:
+            accessLogs.append({
+                'ip': item[0],
+                'count': item[1],
+                'city': item[2],
+                'provider': item[3],
+                'accessTime': item[4].strftime('%Y-%m-%d %H:%M:%S'),
+            })
+
+        return accessLogs

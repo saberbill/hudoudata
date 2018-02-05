@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls import include, url
 from django.contrib import admin
 
-from hudou.views import index, health, getLatestSummary, getHouseArea
+from hudou.views import index, health, getLatestSummary, getHouseArea, getAccessHistory
 
 urlpatterns = [
     # Examples:
@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^$', index),
     url(r'^getLatestSummary', getLatestSummary),
     url(r'^getHouseArea', getHouseArea),
+    url(r'^getAccessHistory', getAccessHistory),
     url(r'^health$', health),
     url(r'^admin/', admin.site.urls),
 ]

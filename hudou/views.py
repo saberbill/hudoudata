@@ -69,3 +69,8 @@ def getHouseArea(request):
 def health(request):
     return render(request,'index.html')
     #return HttpResponse(PageView.objects.count())
+
+def getAccessHistory(request):
+    today = todayWithChineseTZ().strftime("%Y-%m-%d")
+    data = {'data': HouseService.getAccessHistory(today + ' 00:00:00', today + ' 23:59:59')}
+    return JsonResponse(data, content_type='application/json; charset=utf-8')
