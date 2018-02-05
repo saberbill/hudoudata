@@ -8,7 +8,9 @@ from hudou.services.houseservices import HouseService
 class GeneralInvterceptor(MiddlewareMixin):
     def process_request(self,request):
         reqPath = request.path
+        print('ACCESS resource: ' + reqPath)
         if (reqPath == '/'):
+            print('Recode access log.....')
             t = threading.Thread(target=saveAccessHistory, args=(request,))
             t.start()
 
