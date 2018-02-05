@@ -10,7 +10,7 @@ class GeneralInvterceptor(MiddlewareMixin):
         reqPath = request.path
         print('ACCESS resource: ' + reqPath)
         if (reqPath == '/'):
-            print('Recode access log.....')
+            print('***************** Record access log.....')
             t = threading.Thread(target=saveAccessHistory, args=(request,))
             t.start()
 
