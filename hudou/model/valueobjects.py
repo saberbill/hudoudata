@@ -73,3 +73,20 @@ class DailySummary(models.Model):
 
     class Meta:
         db_table = "daily_summary"
+
+
+class AccessHistory(models.Model):
+    #id = models.IntegerField()
+    id = models.AutoField(primary_key=True)
+    ip = models.CharField(max_length=15)
+    xforward = models.CharField(max_length=64)
+    city = models.CharField(max_length=64)
+    provider = models.CharField(max_length=30)
+    accessTime=models.DateTimeField(db_column='access_time')
+
+    def __unicode__(self):  # __str__ on Python 3
+        return self
+
+    class Meta:
+        db_table = "access_history"
+

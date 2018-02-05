@@ -1,6 +1,7 @@
 
-from hudou.handler.sechduler import startFetchDataCronJob
+from hudou.handler.sechduler import startFetchDataCronJob, startClearOldHouseSoldDataCronJob
 startFetchDataCronJob()
+startClearOldHouseSoldDataCronJob()
 
 from django.http import JsonResponse
 from hudou.model.valueobjects import House, Area

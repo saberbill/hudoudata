@@ -1,7 +1,7 @@
 from math import radians, cos, sin, asin, sqrt
 
 from django.utils import timezone
-from datetime import datetime
+from datetime import datetime, timedelta
 import pytz
 
 
@@ -37,3 +37,7 @@ def toChineseTZ(datetime):
     datetime = datetime.replace(tzinfo=utc_tz)
     cst = datetime.astimezone(cst_tz)
     return cst
+
+def dateOfDaysBeforeToday(days):
+    today = todayWithChineseTZ()
+    return today - timedelta(days=days)

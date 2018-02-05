@@ -1,6 +1,6 @@
 import sys
-from hudou.model.valueobjects import House, HouseSold, Area, DailySummary
-from hudou.util.utilities import Utilities, todayWithChineseTZ, nowWithChineseTZ
+from hudou.model.valueobjects import House, HouseSold, Area, DailySummary, AccessHistory
+from hudou.util.utilities import Utilities, todayWithChineseTZ, nowWithChineseTZ, dateOfDaysBeforeToday
 from django.db import connection, transaction
 
 class HouseService:
@@ -96,6 +96,16 @@ class HouseService:
                 lastUpdated=now)
         dailySummary.save()
 
+    def saveAccessHistory(data):
+        now = nowWithChineseTZ()
+        accessHistory = AccessHistory(
+            ip=data['ip'],
+            xforward=data['xforward'],
+            city=data['city'],
+            provider=data['provider'],
+            accessTime=now)
+        accessHistory.save()
+
     def listAllHouses(self):
         return House.objects.all()
 
@@ -122,6 +132,17 @@ class HouseService:
 
     def listAllAreas(self):
         return Area.objects.all()
+
+    def deleteOldHouseSold(beforeDays):
+        date = dateOfDaysBeforeToday(beforeDays)
+        HouseSold.objects.filter(date__lte=date).delete()
+
+
+    def deleteOldAccessHistory(beforeDays):
+        date = dateOfDaysBeforeToday(beforeDays)
+        AccessHistory.objects.filter(accessTime__lte=date).delete()
+
+        print(list)
 
     def getOrSaveAreaByLid(lid):
         area = Area(lid=lid, areaName='新增')

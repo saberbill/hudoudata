@@ -176,6 +176,37 @@ CREATE TABLE house_sold (
 ALTER TABLE house_sold OWNER TO hudou_user;
 
 --
+-- Name: hudou_daliy_summary_seq; Type: SEQUENCE; Schema: public; Owner: hudou_user
+--
+
+CREATE SEQUENCE hudou_access_history_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE hudou_access_history_seq OWNER TO hudou_user;
+
+--
+-- Name: daily_summary; Type: TABLE; Schema: public; Owner: hudou_user
+--
+
+CREATE TABLE access_history (
+    id integer DEFAULT nextval('hudou_access_history_seq'::regclass) NOT NULL,
+    ip character varying(15) DEFAULT '0.0.0.0'::character varying NOT NULL,
+    xforward character varying(64),
+    city character varying(64) DEFAULT NULL::character varying NOT NULL,
+    provider character varying(30) DEFAULT NULL::character varying NOT NULL,
+    access_time timestamp(0) without time zone DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
+
+
+ALTER TABLE access_history OWNER TO hudou_user;
+
+
+--
 -- Name: hudou_area_seq; Type: SEQUENCE SET; Schema: public; Owner: hudou_user
 --
 
@@ -272,6 +303,11 @@ ALTER TABLE ONLY house
 --
 
 CREATE INDEX "PRI_ID" ON daily_summary USING btree (id);
+
+
+ALTER TABLE ONLY access_history
+    ADD CONSTRAINT hudou_access_history_pkey PRIMARY KEY (id);
+
 
 
 --
