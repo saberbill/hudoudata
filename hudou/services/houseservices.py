@@ -215,7 +215,7 @@ class HouseService:
         cursor.execute("SELECT ip, COUNT(ip) count, MAX(city) city, MAX(provider) provider, max(access_time) access_time "
                        "FROM access_history "
                        "WHERE ip IN (SELECT DISTINCT ip FROM access_history) "
-                       "AND access_time>='%s' AND access_time<='%s' GROUP BY ip "
+                       "AND access_time>='%s' AND access_time<='%s' GROUP BY ip ORDER BY access_time"
                        "" % (dateFrom, dateTo))
 
         rows = cursor.fetchall()
