@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>胡豆短租数据日报</title>
-    <link rel="stylesheet" type="text/css" href="/static/hudou.css?t=2"/>
+    <link rel="stylesheet" type="text/css" href="/static/hudou.css"/>
     <script src="/static/Chart.bundle.min.js"></script>
     <script src="/static/jquery-3.3.1.min.js"></script>
 </head>
@@ -58,6 +58,8 @@
         <canvas id="houseAreaChart" width="200" height="100"></canvas>
     </div>
     <div class="block">
+        <div id="days" class="days" val="7">数据日期：<a id="days7" val="7" href="#">最近7日</a>|<a id="days15" val="15"
+                                                                                            href="#">最近15日</a></div>
         <canvas id="houseSoldChart" width="200" height="100"></canvas>
     </div>
     <div class="block">
@@ -204,6 +206,20 @@
     };
 
     $(function () {
+        var $days = $('div#days');
+        $('a', $days).click(function () {
+            var val = $days.attr('val');
+            var $a = $(this);
+            var days = $a.attr('val');
+            if (days != val) {
+                var days = $a.attr('val');
+                $days.attr('val', days);
+                loadLatestSummary($a.attr('val'));
+                fixDaysLinks();
+            }
+            return false;
+        });
+        fixDaysLinks();
 
         var houseAreaChartCtx = document.getElementById("houseAreaChart").getContext("2d");
         var houseAreaChart = new Chart(houseAreaChartCtx, houseAreaChartConfig);
@@ -215,43 +231,63 @@
         var turnoverChartCtx = document.getElementById("turnoverChart").getContext("2d");
         var turnoverChart = new Chart(turnoverChartCtx, turnoverChartConfig);
 
+        var DEFAULT_DAYS = 7;
+        loadHouseAreaChartData();
+        loadLatestSummary(DEFAULT_DAYS);
 
-        $.ajax({
-            url: "/getLatestSummary",
-            type: "GET",
-            datatype: "JSON",
-            data: {days: 7},
-            success: function (data) {
-                //console.log(data);
-                houseSoldChartConfig.data.labels = data.dates;
-                houseSoldChartConfig.data.datasets[0].data = data.totalRooms;
-                houseSoldChartConfig.data.datasets[1].data = data.soldRooms;
-                houseSoldChart.update();
+        function fixDaysLinks() {
+            var $days = $('div#days');
+            var val = $days.attr('val');
+            $('a', $days).each(function (o) {
+                var $this = $(this);
+                if (val == $this.attr('val')) {
+                    $this.addClass('non-click');
+                } else {
+                    $this.removeClass('non-click');
+                }
+            });
+        }
 
-                turnoverChartConfig.data.labels = data.dates;
-                turnoverChartConfig.data.datasets[0].data = data.turnovers;
-                turnoverChart.update()
-            },
-            error: function () {
-                alert("提交失败！");
-            }
-        });
+        function loadHouseAreaChartData() {
+            $.ajax({
+                url: "/getHouseArea",
+                type: "GET",
+                datatype: "JSON",
+                data: {},
+                success: function (data) {
+                    //console.log(data);
+                    houseAreaChartConfig.data.labels = data.areas;
+                    houseAreaChartConfig.data.datasets[0].data = data.areaCounts;
+                    houseAreaChart.update();
+                },
+                error: function () {
+                    alert("提交失败！");
+                }
+            });
+        }
 
-        $.ajax({
-            url: "/getHouseArea",
-            type: "GET",
-            datatype: "JSON",
-            data: {},
-            success: function (data) {
-                //console.log(data);
-                houseAreaChartConfig.data.labels = data.areas;
-                houseAreaChartConfig.data.datasets[0].data = data.areaCounts;
-                houseAreaChart.update();
-            },
-            error: function () {
-                alert("提交失败！");
-            }
-        });
+        function loadLatestSummary(days) {
+            $.ajax({
+                url: "/getLatestSummary",
+                type: "GET",
+                datatype: "JSON",
+                data: {days: days},
+                success: function (data) {
+                    //console.log(data);
+                    houseSoldChartConfig.data.labels = data.dates;
+                    houseSoldChartConfig.data.datasets[0].data = data.totalRooms;
+                    houseSoldChartConfig.data.datasets[1].data = data.soldRooms;
+                    houseSoldChart.update();
+
+                    turnoverChartConfig.data.labels = data.dates;
+                    turnoverChartConfig.data.datasets[0].data = data.turnovers;
+                    turnoverChart.update()
+                },
+                error: function () {
+                    alert("提交失败！");
+                }
+            });
+        }
 
         $.ajax({
                 url: "/getAccessHistory",
@@ -299,7 +335,7 @@
         );
     });
 
-    /*
+/*
     function addCSS() {
         var link = document.createElement('link');
         link.type = 'text/css';
@@ -309,8 +345,9 @@
         link.href = '/static/hudou.css?t=' + timeStampInMs;
         document.getElementsByTagName("head")[0].appendChild(link);
     }
+
     addCSS();
-    */
+*/
 </script>
 </body>
 </html>

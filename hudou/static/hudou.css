@@ -128,3 +128,13 @@ div.row > div {
 .show{
     display: block;
 }
+.days{
+    text-align: right;
+    margin-right: 20px;
+}
+.days a{
+    margin: 0px 10px;
+}
+a.non-click {
+    color: #666;
+}
