@@ -143,7 +143,7 @@
         },
         options: {
             responsive: true,
-            title: {display: true, text: '近7日房源数据趋势图', fontSize: titleSize},
+            title: {display: true, text: '近7日房源销售趋势图', fontSize: titleSize},
             tooltips: tooltips,
             hover: hover,
             legend: legend,
@@ -277,10 +277,12 @@
                     houseSoldChartConfig.data.labels = data.dates;
                     houseSoldChartConfig.data.datasets[0].data = data.totalRooms;
                     houseSoldChartConfig.data.datasets[1].data = data.soldRooms;
+                    houseSoldChartConfig.options.title.text = '近' + days + '日房源销售趋势图';
                     houseSoldChart.update();
 
                     turnoverChartConfig.data.labels = data.dates;
                     turnoverChartConfig.data.datasets[0].data = data.turnovers;
+                    turnoverChartConfig.options.title.text = '近' + days + '日销售额趋势图';
                     turnoverChart.update()
                 },
                 error: function () {
@@ -334,20 +336,6 @@
             }
         );
     });
-
-/*
-    function addCSS() {
-        var link = document.createElement('link');
-        link.type = 'text/css';
-        link.rel = 'stylesheet';
-        var timeStampInMs = window.performance && window.performance.now && window.performance.timing && window.performance.timing.navigationStart ? window.performance.now() + window.performance.timing.navigationStart : Date.now();
-
-        link.href = '/static/hudou.css?t=' + timeStampInMs;
-        document.getElementsByTagName("head")[0].appendChild(link);
-    }
-
-    addCSS();
-*/
 </script>
 </body>
 </html>
